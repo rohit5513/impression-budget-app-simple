@@ -74,4 +74,4 @@ else:
         estimated_budget = (target_impr / 1000.0) * cpm_eff
         st.metric("Estimated budget (EUR)", f" € {estimated_budget:,.2f}")
         st.markdown("---")
-st.caption("Recommendation: keep a 15–20% buffer for inventory/pacing.")
+st.caption("Recommendation: keep a +15–20% buffer amount for inventory/pacing.")
