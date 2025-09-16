@@ -54,7 +54,7 @@ platform = st.selectbox("Platform", platforms)
 ctype_opts = sorted(df[df["platform"] == platform]["campaign type"].dropna().unique().tolist())
 ctype = st.selectbox("Campaign type", ctype_opts)
 
-target_impr = st.number_input("Target impressions", min_value=1_000, step=50_000, value=5_000_000, help=None)
+target_impr = st.number_input("Target impressions", min_value=1_000, step=1_000, value=5_000_000, help=None)
 
 # --- Compute effective CPM for selected segment ---
 seg = df[(df["platform"] == platform) & (df["campaign type"] == ctype)].copy()
