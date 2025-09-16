@@ -45,7 +45,7 @@ except Exception as e:
     st.error(f"Error loading data: {e}")
     st.stop()
 
-st.title("🎯 Impression Budget Calculator")
+st.title("Ads. Impression Budget Calculator")
 
 # --- Inputs (exactly as requested) ---
 platforms = sorted(df["platform"].dropna().unique().tolist())
