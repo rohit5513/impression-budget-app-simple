@@ -72,4 +72,4 @@ else:
         st.warning("Unable to compute CPM for this segment.")
     else:
         estimated_budget = (target_impr / 1000.0) * cpm_eff
-        st.metric("Estimated budget (EUR)", f"{estimated_budget:,.2f}")
+        st.metric("Estimated budget (EUR)", f" € {estimated_budget:,.2f}")
