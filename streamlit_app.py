@@ -32,7 +32,7 @@ def load_data(path: str) -> pd.DataFrame:
     df = df[(df["impressions"] > 0) & (df["cost"] > 0)].copy()
 
     # Hard rule: only Enabled rows (as per requirement to keep UI minimal)
-    df = df[df["campaign status"].str.lower() == "enabled"]
+    #df = df[df["campaign status"].str.lower() == "enabled"]
 
     # Precompute effective CPM per row for reference (not shown)
     df["cpm_calc"] = (df["cost"] / df["impressions"]) * 1000
