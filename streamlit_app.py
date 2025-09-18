@@ -74,4 +74,11 @@ else:
         estimated_budget = (target_impr / 1000.0) * cpm_eff
         st.metric("Estimated budget (EUR)", f" € {estimated_budget:,.2f}")
         st.markdown("---")
-st.caption("Recommendation: keep a +15–20% buffer amount for inventory/pacing.")
+with st.expander("Important planning notes (please read)"):
+    st.markdown("""
+- This is a planning guide, not the exact truth.
+- Results depend on ad quality (how strong the ads are) and keywords we use..
+- You won’t get all impressions at once, delivery is spread over days based on flight length and daily budget.
+- Our current data is limited so treat the output as an estimate.
+- **Recommendation**: keep a **15–20% buffer**.
+""")
