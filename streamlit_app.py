@@ -3,7 +3,7 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 
-st.set_page_config(page_title="Impression Budget Calculator", layout="centered")
+st.set_page_config(page_title="Impression Budget Estimator", layout="centered")
 
 # --- Load data from repo (no upload) ---
 # Expect a CSV at data/campaigns.csv in the repo
@@ -45,7 +45,7 @@ except Exception as e:
     st.error(f"Error loading data: {e}")
     st.stop()
 
-st.title("Ads. Impression Budget Calculator")
+st.title("Ads. Impression Budget Estimator")
 
 # --- Inputs (exactly as requested) ---
 platforms = sorted(df["platform"].dropna().unique().tolist())
