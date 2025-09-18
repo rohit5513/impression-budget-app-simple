@@ -73,13 +73,12 @@ else:
     else:
         estimated_budget = (target_impr / 1000.0) * cpm_eff
         st.metric("Estimated budget (EUR)", f" € {estimated_budget:,.2f}")
-        st.markdown("---")
 
 # --- Time factor / pacing ---
 flight_days = st.number_input("Flight length (days)", min_value=1, value=14, step=1)
 st.metric("Daily budget (EUR)", f"€ {(estimated_budget/flight_days):,.2f}")
 st.metric("Daily impressions (est.)", f"{(target_impr/flight_days):,.0f}")
-
+st.markdown("---")
 
 with st.expander("Important planning notes (please read)"):
     st.markdown("""
