@@ -84,7 +84,7 @@ if has_country:
     # All actual country labels except the ones that mean "all"
     other_countries = [c for c in country_vals if c.strip().lower() not in all_labels]
 
-    options = ["ALL/Overall"] + sorted(other_countries)
+    options = ["Overall"] + sorted(other_countries)
     country = st.selectbox("Country", options)
 else:
     st.caption("No country column found in this export; using all markets together.")
@@ -152,10 +152,8 @@ with st.expander("Important notes (please read)"):
   - **Budget = (Target impressions ÷ 1000) × CPM (EUR).**
 
 - **How country is used**  
-  - If you pick a country (NL, BE, Benelux, etc.) **and** that country has at least **100,000 impressions** in the history  
-    for that Platform × Campaign type, the calculator uses that country’s own CPM.  
-  - If the country has **too little or no data**, the tool automatically falls back to the **overall CPM (ALL/Overall)**  
-    so you still get a stable estimate. A short note under the result tells you what happened.
+  - If you pick a country (NL, BE, Benelux, etc.) **and** that country has at least **100,000 impressions** in the history for that Platform × Campaign type, the calculator uses that country’s own CPM.  
+  - If the country has **too little or no data**, the tool automatically falls back to the **overall CPM (ALL/Overall)** so you still get a stable estimate. A short note under the result tells you what happened.
 
 - **Time factor (delivery over days)**  
   - You won’t get all impressions immediately. They are spread over the **flight length (days)** you enter.  
