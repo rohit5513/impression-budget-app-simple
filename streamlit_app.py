@@ -73,7 +73,9 @@ if base.empty:
 
 # --- Country selection (if column exists) ---
 country = "ALL/Overall"
-if "country" in base.columns:
+has_country = "country" in base.columns
+
+if has_country:
     base["country"] = base["country"].astype(str)
 
     country_vals = base["country"].dropna().unique().tolist()
@@ -82,45 +84,38 @@ if "country" in base.columns:
     # All actual country labels except the ones that mean "all"
     other_countries = [c for c in country_vals if c.strip().lower() not in all_labels]
 
-    # Show selector: ALL/Overall + individual countries
-    options = ["Overall"] + sorted(other_countries)
+    options = ["ALL/Overall"] + sorted(other_countries)
     country = st.selectbox("Country", options)
 else:
     st.caption("No country column found in this export; using all markets together.")
 
-# --- Build segment based on country choice ---
-if "country" in base.columns and country != "ALL/Overall":
-    seg = base[base["country"] == country].copy()
-else:
-    seg = base.copy()  # ALL/Overall
-
-if seg.empty:
-    st.warning("No data for the selected Platform × Campaign type (and Country).")
-    st.stop()
-
-# --- Compute CPMs: overall and (optional) country ---
+# --- Overall CPM (ALL/Overall) ---
 overall_cost = base["cost"].sum()
 overall_impr = base["impressions"].sum()
 overall_cpm = (overall_cost / overall_impr) * 1000 if overall_impr > 0 else np.nan
 
-cost_sum = seg["cost"].sum()
-impr_sum = seg["impressions"].sum()
+THRESHOLD_IMPR = 100_000  # minimum impressions to trust a country CPM
+used_country_cpm = False  # flag for the note
+country_impr = 0
 
-THRESHOLD_IMPR = 100_000  # minimum impressions to trust a country-specific CPM
-used_overall = False
+# --- Decide which CPM to use: country (if enough data) or overall ---
+if has_country and country != "ALL/Overall":
+    seg_country = base[base["country"] == country].copy()
+    country_impr = seg_country["impressions"].sum()
+    country_cost = seg_country["cost"].sum()
 
-if "country" in base.columns and country != "ALL/Overall":
-    # If the country has enough impressions, use its own CPM
-    if impr_sum >= THRESHOLD_IMPR:
-        cpm_eff = (cost_sum / impr_sum) * 1000 if impr_sum > 0 else np.nan
-        used_overall = False
+    if country_impr >= THRESHOLD_IMPR:
+        # Enough data → use country CPM
+        cpm_eff = (country_cost / country_impr) * 1000
+        used_country_cpm = True
     else:
-        # Fallback: not enough history for that country, use overall CPM
+        # Not enough (or zero) → fall back to overall CPM
         cpm_eff = overall_cpm
-        used_overall = True
+        used_country_cpm = False
 else:
-    # If no country chosen / ALL/Overall, just use overall CPM
+    # ALL/Overall or no country column → use overall CPM
     cpm_eff = overall_cpm
+    used_country_cpm = False
 
 # --- Estimated budget + time factor ---
 if np.isnan(cpm_eff):
@@ -135,15 +130,15 @@ else:
     st.metric("Daily impressions (est.)", f"{(target_impr / flight_days):,.0f}")
 
     # Country note
-    if "country" in base.columns and country != "ALL/Overall":
-        if used_overall:
+    if has_country and country != "ALL/Overall":
+        if used_country_cpm:
             st.caption(
-                f"Note: {country} has less than {THRESHOLD_IMPR:,} impressions in history, "
-                "so CPM falls back to the overall (ALL/Overall) value."
+                f"Country used: {country} (≥ {THRESHOLD_IMPR:,} impressions for this Platform × Campaign type)."
             )
         else:
             st.caption(
-                f"Country used: {country} (≥ {THRESHOLD_IMPR:,} impressions for this Platform × Campaign type)."
+                f"Note: {country} does not have enough impressions for this Platform × Campaign type, "
+                f"so CPM and budget are based on the overall (ALL/Overall) data."
             )
 
     st.markdown("---")
@@ -152,25 +147,6 @@ else:
 with st.expander("Important notes (please read)"):
     st.markdown(
         """
-- **What this tool does:**  
+- **How the calculator works**  
   - It uses your past data to work out an average **CPM** (cost per 1,000 impressions).  
-  - **Budget = (Target impressions ÷ 1000) × CPM (EUR).**
-
-- **How country is used:**  
-  - If you pick a country (NL, BE, Benelux, etc.) **and** that country has at least **100,000 impressions** in history,  
-    the calculator uses that country’s own CPM.  
-  - If the country has **less than 100,000 impressions**, it is **not stable enough**, so the calculator falls back to the  
-    **overall CPM (ALL/Overall)** instead of showing a shaky number.  
-  - A short note below the result tells you whether the tool used **country CPM** or **overall CPM**.
-
-- **Time factor (delivery over days):**  
-  - You won’t get all impressions immediately. They are spread over the **flight length (days)** you enter.  
-  - The app shows you the **daily budget** and **daily estimated impressions** to make this clear.
-
-- **Limitations to keep in mind:**  
-  - This is a **planning guide**, not the exact truth.  
-  - Real results depend on **ad quality/Quality Score**, **keywords**, **where ads show (apps vs websites)**, and **who you target**.  
-  - Our data is limited to what’s in the export, so treat the number as an **estimate** rather than a guarantee.  
-  - It’s smart to keep a **15–20% buffer** to cover normal changes in price, competition, and pacing.
-        """
-    )
+  - **Budget**
