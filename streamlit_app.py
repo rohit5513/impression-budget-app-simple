@@ -83,7 +83,7 @@ if "country" in base.columns:
     other_countries = [c for c in country_vals if c.strip().lower() not in all_labels]
 
     # Show selector: ALL/Overall + individual countries
-    options = ["ALL/Overall"] + sorted(other_countries)
+    options = ["Overall"] + sorted(other_countries)
     country = st.selectbox("Country", options)
 else:
     st.caption("No country column found in this export; using all markets together.")
