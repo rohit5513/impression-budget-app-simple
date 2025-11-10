@@ -153,7 +153,7 @@ with st.expander("Important notes (please read)"):
 
 - **How country is used**  
   - If you pick a country (NL, BE, Benelux, etc.) **and** that country has at least **100,000 impressions** in the history for that Platform × Campaign type, the calculator uses that country’s own CPM.  
-  - If the country has **too little or no data**, the tool automatically falls back to the **overall CPM (ALL/Overall)** so you still get a stable estimate. A short note under the result tells you what happened.
+  - If the country has **too little or no data**, the tool automatically falls back to the **overall CPM (Overall)** so you still get a stable estimate. A short note under the result tells you what happened.
 
 - **Time factor (delivery over days)**  
   - You won’t get all impressions immediately. They are spread over the **flight length (days)** you enter.  
