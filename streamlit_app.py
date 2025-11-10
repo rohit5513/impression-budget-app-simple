@@ -149,4 +149,26 @@ with st.expander("Important notes (please read)"):
         """
 - **How the calculator works**  
   - It uses your past data to work out an average **CPM** (cost per 1,000 impressions).  
-  - **Budget**
+  - **Budget = (Target impressions ÷ 1000) × CPM (EUR).**
+
+- **How country is used**  
+  - If you pick a country (NL, BE, Benelux, etc.) **and** that country has at least **100,000 impressions** in the history  
+    for that Platform × Campaign type, the calculator uses that country’s own CPM.  
+  - If the country has **too little or no data**, the tool automatically falls back to the **overall CPM (ALL/Overall)**  
+    so you still get a stable estimate. A short note under the result tells you what happened.
+
+- **Time factor (delivery over days)**  
+  - You won’t get all impressions immediately. They are spread over the **flight length (days)** you enter.  
+  - The app shows your **daily budget** and **daily estimated impressions**.
+
+- **Things this tool does NOT control**  
+  - This is a **planning guide**, not exact truth.  
+  - Real results still depend on:
+    - **Ad quality / Quality Score**  
+    - **Keywords** and match types  
+    - **Where ads show** (apps vs websites)  
+    - **Who you target** and competition  
+  - Our data is limited to what’s in the export, so treat the number as an **estimate**, not a promise.  
+  - It’s smart to keep a **15–20% buffer** for normal changes in price, competition, and pacing.
+        """
+    )
